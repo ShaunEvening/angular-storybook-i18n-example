@@ -1,27 +1,79 @@
-# AngularStorybookI18nExample
+# Angular Storybook I18n Example
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
+This repo shows how you can create a locale switcher for Angular Storybook with Transloco
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 1. Expose transloco to Storybook
 
-## Code scaffolding
+To expose Transloco (or any other i18n service) to storybook we need to create a component to wrap our stories in and manage the locale changes. I've done that in [i18n-manager.component.ts](.storybook/with-i18n/i18n-manager.component.ts)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```ts
+// i18n-manager.component.ts
 
-## Build
+import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { TranslocoService } from "@ngneat/transloco";
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+@Component({
+  selector: "sb-locale-manager",
+  template: `
+    <div>
+      <ng-content></ng-content>
+    </div>
+  `,
+})
+export class LocaleManagerComponent implements OnChanges {
+  @Input() locale: string = "en";
 
-## Running unit tests
+  constructor(private translationService: TranslocoService) {}
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  ngOnChanges(changes: SimpleChanges) {
+    // If the locale prop has change, update the active locale
+    if (changes["locale"]) {
+      const changedProp = changes["locale"];
+      this.translationService.setActiveLang(changedProp.currentValue);
+    }
+  }
+}
+```
 
-## Running end-to-end tests
+Now that we have our manager component, we need to wrap our stories in it.
+Inside of [preview.js](.storybook/preview.js) we need to declare two decorators:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. `moduleMetadata` to inject your i18n service and your manager component
+2. The decorator to wrap your stories in the manager component.
 
-## Further help
+```js
+export const decorators = [
+  moduleMetadata({
+    declarations: [LocaleManagerComponent],
+    imports: [TranslocoRootModule, HttpClientModule]
+  }),
+  (story, context) => {
+    const { locale } = context.globals;
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    return componentWrapperDecorator(LocaleManagerComponent, { locale })(story, context)
+  },
+]
+```
+
+## 2. Add your locale switcher
+
+Declare your global locale variable by adding the following to your [preview.js](.storybook/preview.js)
+
+```js
+export const globalTypes = {
+  locale: {
+    name: 'Locale',
+    title: 'Locale',
+    description: 'Internationalization locale',
+    toolbar: {
+      icon: 'globe',
+      items: [
+        { value: 'en', right: '🇺🇸', title: 'English' },
+        { value: 'de', right: '🇩🇪', title: 'Deutsch' },
+        { value: 'ar', right: '🇦🇪', title: 'عربي' },
+      ],
+    },
+  },
+};
+```
