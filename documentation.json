@@ -1,0 +1,568 @@
+{
+    "pipes": [],
+    "interfaces": [],
+    "injectables": [
+        {
+            "name": "TranslocoHttpLoader",
+            "id": "injectable-TranslocoHttpLoader-fd7b6a53a8a568360571d44a36721b9f660b1c9c93be7da08e1b8e4c45c7e7ef541f27f19c3311b952a1b66e83239b64cd3236925e37c9670626ae00a65a05d7",
+            "file": "src/app/transloco.module.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "getTranslation",
+                    "args": [
+                        {
+                            "name": "lang",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 20,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "lang",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { HttpClient } from \"@angular/common/http\";\nimport {\n  TRANSLOCO_LOADER,\n  Translation,\n  TranslocoLoader,\n  TRANSLOCO_CONFIG,\n  translocoConfig,\n  TranslocoModule,\n  TRANSLOCO_TRANSPILER,\n  DefaultTranspiler,\n} from \"@ngneat/transloco\";\nimport { TranslocoMessageFormatModule } from \"@ngneat/transloco-messageformat\";\nimport { Injectable, NgModule } from \"@angular/core\";\nimport { TranslocoLocaleModule } from \"@ngneat/transloco-locale\";\n\n@Injectable({ providedIn: \"root\" })\nexport class TranslocoHttpLoader implements TranslocoLoader {\n  constructor(private http: HttpClient) {}\n\n  getTranslation(lang: string) {\n    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);\n  }\n}\n\n@NgModule({\n  imports: [\n    TranslocoMessageFormatModule.forRoot(),\n    TranslocoLocaleModule.forRoot({\n      langToLocaleMapping: {\n        en: \"en-US\",\n        de: \"de-DE\",\n        ar: \"ar-AR\",\n      },\n    }),\n  ],\n  exports: [TranslocoModule],\n  providers: [\n    {\n      provide: TRANSLOCO_TRANSPILER,\n      useClass: DefaultTranspiler,\n    },\n    {\n      provide: TRANSLOCO_CONFIG,\n      useValue: translocoConfig({\n        availableLangs: [\n          { id: \"en\", label: \"English\" },\n          { id: \"de\", label: \"German\" },\n          { id: \"ar\", label: \"Arabic\" },\n        ],\n        reRenderOnLangChange: true,\n        fallbackLang: \"es\",\n        defaultLang: \"en\",\n        missingHandler: {\n          useFallbackTranslation: false,\n        },\n      }),\n    },\n    { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },\n  ],\n})\nexport class TranslocoRootModule {}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 17,
+                "jsdoctags": [
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        }
+    ],
+    "guards": [],
+    "interceptors": [],
+    "classes": [],
+    "directives": [],
+    "components": [
+        {
+            "name": "AppComponent",
+            "id": "component-AppComponent-f9653359372ecbd6d6b83815ba4da6ac39d76ddc83b0c337b30072a601cb1ad935413923c4e37525778971e63647e381b28738db2dab989f310bafa236864d1d",
+            "file": "src/app/app.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-root",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<ng-container *transloco=\"let t\">\n  <div style=\"text-align:center\" class=\"content\">\n    <h1>\n      {{ t(\"title\", { app: title }) }}\n    </h1>\n    <span style=\"display: block\">\n      {{ t(\"body\", { app: title }) }}\n    </span>\n    <img\n      width=\"300\"\n      alt=\"Angular Logo\"\n      src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\"\n    />\n  </div>\n</ng-container>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "title",
+                    "defaultValue": "\"angular-storybook-i18n-example\"",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from \"@angular/core\";\nimport { TranslocoService } from \"@ngneat/transloco\";\n\n@Component({\n  selector: \"app-root\",\n  template: `\n    <ng-container *transloco=\"let t\">\n      <div style=\"text-align:center\" class=\"content\">\n        <h1>\n          {{ t(\"title\", { app: title }) }}\n        </h1>\n        <span style=\"display: block\">\n          {{ t(\"body\", { app: title }) }}\n        </span>\n        <img\n          width=\"300\"\n          alt=\"Angular Logo\"\n          src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==\"\n        />\n      </div>\n    </ng-container>\n  `,\n  styles: [],\n})\nexport class AppComponent {\n  title = \"angular-storybook-i18n-example\";\n\n  constructor(private translationService: TranslocoService) {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "translationService",
+                        "type": "TranslocoService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 26,
+                "jsdoctags": [
+                    {
+                        "name": "translationService",
+                        "type": "TranslocoService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "LocaleManagerComponent",
+            "id": "component-LocaleManagerComponent-615ff443b6dd836ec94c2c0436ac0329fd696e68dfebcfa9348b57407e3161aa1d147a29b16ec4d2cfa4ee5068bf7817105bb4365d43ea8b535b568e4df612aa",
+            "file": ".storybook/with-i18n/i18n-manager.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "sb-locale-manager",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<div>\n  <ng-content></ng-content>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "locale",
+                    "defaultValue": "\"en\"",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 19,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 30,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  Component,\n  Input,\n  OnChanges,\n  OnInit,\n  SimpleChanges,\n} from \"@angular/core\";\nimport { TranslocoService } from \"@ngneat/transloco\";\n\n@Component({\n  selector: \"sb-locale-manager\",\n  template: `\n    <div>\n      <ng-content></ng-content>\n    </div>\n  `,\n})\nexport class LocaleManagerComponent implements OnChanges, OnInit {\n  @Input() locale: string = \"en\";\n\n  constructor(private translationService: TranslocoService) {}\n\n  ngOnChanges(changes: SimpleChanges) {\n    for (const propName in changes) {\n      const changedProp = changes[propName];\n      console.log(propName, changedProp);\n    }\n  }\n\n  ngOnInit(): void {\n    this.translationService.getActiveLang();\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "translationService",
+                        "type": "TranslocoService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 19,
+                "jsdoctags": [
+                    {
+                        "name": "translationService",
+                        "type": "TranslocoService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnChanges",
+                "OnInit"
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "name": "AppModule",
+            "id": "module-AppModule-d1385030c1cb4c7f9775aed12bdbd71af63d6c7ab060f019fff4971ef873e081bb68fe12f9889e987cb2939a0bf01a89dd296b0ed3dad98ac6d252bb76d1f735",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/app.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from \"@angular/core\";\nimport { BrowserModule } from \"@angular/platform-browser\";\nimport { HttpClientModule } from \"@angular/common/http\";\n\nimport { AppRoutingModule } from \"./app-routing.module\";\nimport { AppComponent } from \"./app.component\";\nimport { TranslocoRootModule } from \"./transloco.module\";\n\n@NgModule({\n  declarations: [AppComponent],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    TranslocoRootModule,\n    HttpClientModule,\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "AppComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "AppRoutingModule"
+                        },
+                        {
+                            "name": "TranslocoRootModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": [
+                        {
+                            "name": "AppComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "AppRoutingModule",
+            "id": "module-AppRoutingModule-78922b3ae99d2c5249b333980bd5afde1b120b2cc6fedfd41b8b2cc90f279797cb4b22e183bf7e1d1dfab8c6100e77e7812c110234d81f866f544f28a3e18b15",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/app-routing.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule { }\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "TranslocoRootModule",
+            "id": "module-TranslocoRootModule-fd7b6a53a8a568360571d44a36721b9f660b1c9c93be7da08e1b8e4c45c7e7ef541f27f19c3311b952a1b66e83239b64cd3236925e37c9670626ae00a65a05d7",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/transloco.module.ts",
+            "methods": [],
+            "sourceCode": "import { HttpClient } from \"@angular/common/http\";\nimport {\n  TRANSLOCO_LOADER,\n  Translation,\n  TranslocoLoader,\n  TRANSLOCO_CONFIG,\n  translocoConfig,\n  TranslocoModule,\n  TRANSLOCO_TRANSPILER,\n  DefaultTranspiler,\n} from \"@ngneat/transloco\";\nimport { TranslocoMessageFormatModule } from \"@ngneat/transloco-messageformat\";\nimport { Injectable, NgModule } from \"@angular/core\";\nimport { TranslocoLocaleModule } from \"@ngneat/transloco-locale\";\n\n@Injectable({ providedIn: \"root\" })\nexport class TranslocoHttpLoader implements TranslocoLoader {\n  constructor(private http: HttpClient) {}\n\n  getTranslation(lang: string) {\n    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);\n  }\n}\n\n@NgModule({\n  imports: [\n    TranslocoMessageFormatModule.forRoot(),\n    TranslocoLocaleModule.forRoot({\n      langToLocaleMapping: {\n        en: \"en-US\",\n        de: \"de-DE\",\n        ar: \"ar-AR\",\n      },\n    }),\n  ],\n  exports: [TranslocoModule],\n  providers: [\n    {\n      provide: TRANSLOCO_TRANSPILER,\n      useClass: DefaultTranspiler,\n    },\n    {\n      provide: TRANSLOCO_CONFIG,\n      useValue: translocoConfig({\n        availableLangs: [\n          { id: \"en\", label: \"English\" },\n          { id: \"de\", label: \"German\" },\n          { id: \"ar\", label: \"Arabic\" },\n        ],\n        reRenderOnLangChange: true,\n        fallbackLang: \"es\",\n        defaultLang: \"en\",\n        missingHandler: {\n          useFallbackTranslation: false,\n        },\n      }),\n    },\n    { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },\n  ],\n})\nexport class TranslocoRootModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "App",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/app.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: true\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: false\n}"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/app.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<AppComponent>",
+                "defaultValue": "(args: AppComponent) => ({\n  props: args,\n})"
+            }
+        ],
+        "functions": [],
+        "typealiases": [],
+        "enumerations": [],
+        "groupedVariables": {
+            "src/stories/app.stories.ts": [
+                {
+                    "name": "App",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/app.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/app.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<AppComponent>",
+                    "defaultValue": "(args: AppComponent) => ({\n  props: args,\n})"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: true\n}"
+                }
+            ],
+            "src/environments/environment.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false\n}"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {}
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "className": "AppModule",
+        "children": [
+            {
+                "name": "routes",
+                "filename": "src/app/app-routing.module.ts",
+                "module": "AppRoutingModule",
+                "children": [],
+                "kind": "module"
+            }
+        ]
+    },
+    "coverage": {
+        "count": 0,
+        "status": "low",
+        "files": [
+            {
+                "filePath": ".storybook/with-i18n/i18n-manager.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LocaleManagerComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "AppComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/transloco.module.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "TranslocoHttpLoader",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.prod.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/app.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "App",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/app.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}

@@ -1,0 +1,4 @@
+{
+    "title": "Willkommen bei {{ app }}!",
+    "body": "{{ app }} läuft jetzt auf Deutsch!"
+}

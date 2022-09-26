@@ -1,10 +1,9 @@
 {
   "extends": "../tsconfig.app.json",
   "compilerOptions": {
-    "types": [
-      "node"
-    ],
-    "allowSyntheticDefaultImports": true
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "../src/test.ts",
@@ -13,9 +12,8 @@
   ],
   "include": [
     "../src/**/*",
-    "../projects/**/*"
+    "../projects/**/*",
+    "./with-i18n/i18n-manager.component.ts"
   ],
-  "files": [
-    "./typings.d.ts"
-  ]
+  "files": ["./typings.d.ts"]
 }
